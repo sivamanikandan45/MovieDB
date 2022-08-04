@@ -1,6 +1,5 @@
 package com.example.moviedb
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class MovieListAdapter(var list:List<Movie>):RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter(var list: List<Movie>):RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
     private lateinit var listener:ItemClickListener
 
     interface ItemClickListener{
-        public fun onItemClick(position:Int)
+        fun onItemClick(position:Int)
     }
 
     fun setOnItemClickListener(listener: ItemClickListener){
@@ -41,7 +40,7 @@ class MovieListAdapter(var list:List<Movie>):RecyclerView.Adapter<MovieListAdapt
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //holder.imageView.setImageURI(list[position].img)
-        Picasso.get().load(list[position].img).into(holder.imageView);
+        Picasso.get().load(list[position].posterimg).into(holder.imageView);
         holder.nameTextView.text=list[position].title
     }
 
@@ -49,3 +48,4 @@ class MovieListAdapter(var list:List<Movie>):RecyclerView.Adapter<MovieListAdapt
         return list.size
     }
 }
+
