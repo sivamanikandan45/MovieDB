@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +34,7 @@ class HomeFragment : Fragment() {
         lateinit var adapter:MovieListAdapter
         super.onViewCreated(view, savedInstanceState)
         val manager= GridLayoutManager(activity,3)
-        val movieListViewModel=ListViewModel()
+        val movieListViewModel:ListViewModel by activityViewModels()
         GlobalScope.launch {
             val job= GlobalScope.launch {
                 loadData(movieListViewModel)
@@ -53,6 +54,7 @@ class HomeFragment : Fragment() {
             })
             //val jsonObject = JSONTokener(con).nextValue() as JSONObject
             GlobalScope.launch(Dispatchers.Main) {
+                movieListViewModel.viewType.observe(this,)
                 val recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 recyclerView.adapter=adapter
                 //manager.orientation=RecyclerView.HORIZONTAL

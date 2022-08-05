@@ -19,6 +19,7 @@ class MovieListAdapter(var list: List<Movie>):RecyclerView.Adapter<MovieListAdap
         this.listener=listener
     }
 
+
     class ViewHolder(view: View,listener: ItemClickListener):RecyclerView.ViewHolder(view){
         val nameTextView:TextView
         val imageView:ImageView
