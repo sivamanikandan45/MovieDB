@@ -45,16 +45,18 @@ class HomeFragment : Fragment() {
                 override fun onItemClick(position: Int) {
                     //movieListViewModel.position=position
                     val intent= Intent(activity,MovieActivity::class.java)
-                    intent.putExtra("position",position)
+                    val id=movieListViewModel.movieList[position].id
+
+                    intent.putExtra("id",id)
                     movieListViewModel.movie.value=movieListViewModel.movieList[position]
                     println(movieListViewModel.movieList)
-                    intent.putExtra("movie",movieListViewModel.movie.value)
+                    //intent.putExtra("movie",movieListViewModel.movie.value)
                     startActivity(intent)
                 }
             })
             //val jsonObject = JSONTokener(con).nextValue() as JSONObject
             GlobalScope.launch(Dispatchers.Main) {
-                movieListViewModel.viewType.observe(this,)
+               // movieListViewModel.viewType.observe(this,)
                 val recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 recyclerView.adapter=adapter
                 //manager.orientation=RecyclerView.HORIZONTAL
@@ -84,12 +86,13 @@ class HomeFragment : Fragment() {
                 var list:MutableList<Movie> = mutableListOf()
                 for(i in 0 until jsonArray.length()){
                     val link="https://image.tmdb.org/t/p/w500/"
+                    val id=jsonArray.getJSONObject(i).getString("id").toInt()
                     val imgURI=jsonArray.getJSONObject(i).getString("poster_path")
                     val bgURI=jsonArray.getJSONObject(i).getString("backdrop_path")
                     val overview=jsonArray.getJSONObject(i).getString("overview")
                     val title=jsonArray.getJSONObject(i).getString("original_title")
                     val popularity=jsonArray.getJSONObject(i).getString("popularity")
-                    val movie=Movie(title,(link+imgURI.toString()).toUri(),overview,popularity.toDouble(),(link+bgURI.toString()).toUri())
+                    val movie=Movie(id,title,(link+imgURI.toString()).toUri(),overview,popularity.toDouble(),(link+bgURI.toString()).toUri())
                     //movieListViewModel.movieList.add(movie)
                     list.add(movie)
                 }
