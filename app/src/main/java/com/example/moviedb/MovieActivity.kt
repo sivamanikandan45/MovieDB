@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.net.toUri
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,6 +32,12 @@ class MovieActivity : AppCompatActivity() {
         val rateThis:TextView=findViewById(R.id.rate_this)
         rateThis.setOnClickListener{
             println("Rating this")
+            val dialog=RatingDialogFragment()
+            val sharedPreferences=getSharedPreferences("RatingId", MODE_PRIVATE)
+            val editor=sharedPreferences.edit()
+            editor.putInt("id",id)
+            editor.apply()
+            dialog.show(supportFragmentManager,"")
         }
 
         val watchLater:TextView=findViewById(R.id.watch_later)
