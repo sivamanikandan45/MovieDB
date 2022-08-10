@@ -27,6 +27,7 @@ class MovieActivity : AppCompatActivity() {
 
         GlobalScope.launch {
             getData(id)
+            //gatCastData(id)
         }
 
         val rateThis:TextView=findViewById(R.id.rate_this)
@@ -40,11 +41,11 @@ class MovieActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager,"")
         }
 
-        val watchLater:TextView=findViewById(R.id.watch_later)
+        /*val watchLater:TextView=findViewById(R.id.watch_later)
         watchLater.setOnClickListener{
             println("Added to watch later")
             //Toast.makeText(this,"Added to watchLater",Toast.LENGTH_SHORT).show()
-        }
+        }*/
 
         /*println(selectedMovie)
 
@@ -62,6 +63,54 @@ class MovieActivity : AppCompatActivity() {
         overview.text=selectedMovie?.overview*/
 
     }
+
+    /*private suspend fun gatCastData(id: Int) {
+        withContext(Dispatchers.IO){
+            //val url= "https://api.themoviedb.org/3/movie/$id?api_key=08e4a6a03c5c292c1893f7127324e5f3"
+            val url="https://api.themoviedb.org/3/movie/$id/credits?api_key=08e4a6a03c5c292c1893f7127324e5f3&language=en-US"
+            val connection= URL(url).openConnection() as HttpURLConnection
+            val reader= BufferedReader(InputStreamReader(connection.inputStream))
+
+            var response=""
+            var line=reader.readLine()
+            while(line!=null){
+                response+=line
+                line=reader.readLine()
+            }
+
+            if(response.isNotEmpty()){
+                val jsonObject = JSONTokener(response).nextValue() as JSONObject
+                val backgroundImg=jsonObject.getString("backdrop_path")
+                val title=jsonObject.getString("original_title")
+                val tagline=jsonObject.getString("tagline")
+                val overviewText=jsonObject.getString("overview")
+                val rating=jsonObject.getString("vote_average")
+                val rate_count=jsonObject.getString("vote_count")
+                val popularityCount=jsonObject.getString("popularity")
+
+                withContext(Dispatchers.Main){
+                    val link="https://image.tmdb.org/t/p/w500/"
+                    val movieImg:ImageView=findViewById(R.id.movie_pic)
+                    val movieName:TextView=findViewById(R.id.movie_title)
+                    val popularity:TextView=findViewById(R.id.popularity)
+                    val overview:TextView=findViewById(R.id.overview)
+                    val taglineTextView:TextView=findViewById(R.id.tagline)
+                    val ratingValue:TextView=findViewById(R.id.rating)
+                    val ratingCount:TextView=findViewById(R.id.rating_count)
+
+                    //movieImg.setImageURI(backgroundImg.toUri())
+                    Picasso.get().load(link+backgroundImg).into(movieImg)
+                    movieName.text=title
+                    popularity.text=popularityCount
+                    overview.text=overviewText
+                    taglineTextView.text=tagline
+                    ratingValue.text=rating+"/10"
+                    ratingCount.text=rate_count
+                }
+
+            }
+        }
+    }*/
 
     private suspend fun getData(id: Int) {
         withContext(Dispatchers.IO){

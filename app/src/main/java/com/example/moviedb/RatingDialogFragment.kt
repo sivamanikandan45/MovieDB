@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RatingBar
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RatingDialogFragment:DialogFragment() {
+    private val viewModel:ListViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,10 +59,22 @@ class RatingDialogFragment:DialogFragment() {
 
             val ratedMovie= id?.let { RatedMovie(it,ratedValue,comment.toString()) }
             if(ratedMovie!=null){
-                dbInstance.ratedMovieDao().addReview(ratedMovie)
+                val ratedList=dbInstance.ratedMovieDao().getRatedList()
+                if(search(id,ratedList)){
+                    dbInstance.ratedMovieDao().updateReview(ratedMovie)
+                }else{
+                    dbInstance.ratedMovieDao().addReview(ratedMovie)
+                }
             }
-
-
         }
+    }
+
+    private fun search(id: Int, ratedList: MutableList<RatedMovie>):Boolean {
+            for(ratedMovie in ratedList){
+                if(ratedMovie.id==id){
+                    return true
+                }
+            }
+        return false
     }
 }

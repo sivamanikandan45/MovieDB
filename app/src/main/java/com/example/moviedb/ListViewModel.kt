@@ -14,7 +14,4 @@ class ListViewModel() :ViewModel(){
     var movie:MutableLiveData<Movie> = MutableLiveData(Movie(1,"Example","https://www.google.com".toUri(),"Example",12.00,"https://www.google.com".toUri()))
 
     var viewType:MutableLiveData<ViewType> = MutableLiveData()
-
-    var watchLaterList = mutableListOf<Movie>()
-
 }

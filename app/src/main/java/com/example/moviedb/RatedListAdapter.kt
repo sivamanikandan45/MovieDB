@@ -21,6 +21,7 @@ class RatedListAdapter(private val list: List<RatedMovie>, val model: ListViewMo
             review=view.findViewById(R.id.rated_movie_comment)
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatedListAdapter.ViewHolder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.rated_movie_item,parent,false)
         return  ViewHolder(view)

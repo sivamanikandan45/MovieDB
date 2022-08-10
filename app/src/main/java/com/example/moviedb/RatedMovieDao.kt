@@ -12,4 +12,7 @@ interface RatedMovieDao{
 
     @Query("SELECT * FROM RatedMovie")
     fun getRatedList():MutableList<RatedMovie>
+
+    @Update
+    fun updateReview(ratedMovie: RatedMovie)
 }

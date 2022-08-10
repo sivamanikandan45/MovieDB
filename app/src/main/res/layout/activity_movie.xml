@@ -5,13 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#212121">
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#212121"
-
         tools:context=".MovieActivity">
 
         <ImageView
@@ -43,24 +40,26 @@
             android:text="Tagline"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/movie_title"
             app:layout_constraintStart_toStartOf="@+id/movie_title"
             />
 
         <androidx.cardview.widget.CardView
-            android:backgroundTint="#2a2a2a"
             android:id="@+id/card"
-            android:layout_margin="16dp"
-            app:layout_constraintTop_toBottomOf="@id/tagline"
-            app:layout_constraintStart_toStartOf="@+id/tagline"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp">
+            android:layout_margin="16dp"
+            android:backgroundTint="#2a2a2a"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tagline">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/rating"
@@ -72,23 +71,24 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/rate_this"
-                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/rating_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/review"
+                    android:drawableTint="@color/white"
                     android:text="1234567"
-
                     android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/rating"
-                    app:layout_constraintStart_toStartOf="@+id/rating"
-                    app:layout_constraintTop_toBottomOf="@+id/rating" />
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/rate_this"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/rate_this"
@@ -98,23 +98,10 @@
                     android:text="Rate this"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintEnd_toStartOf="@+id/watch_later"
+                    app:layout_constraintEnd_toStartOf="@+id/rating_count"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/rating"
                     app:layout_constraintTop_toTopOf="@+id/rating" />
-
-                <TextView
-                    android:id="@+id/watch_later"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/watch_later"
-                    android:text="Watch Later"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/rate_this"
-                    app:layout_constraintTop_toTopOf="@+id/rate_this" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,7 +125,7 @@
             android:text="1234567890"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/popularity_label"
             app:layout_constraintTop_toBottomOf="@+id/popularity_label" />
         <TextView
@@ -155,17 +142,40 @@
 
         <TextView
             android:id="@+id/overview"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Overview Text"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginEnd="16dp"
+            android:justificationMode="inter_word"
             android:paddingEnd="16dp"
+            android:text="Overview Text"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/overview_label"
             app:layout_constraintTop_toBottomOf="@+id/overview_label" />
+        <TextView
+            android:id="@+id/cast_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cast"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/overview_label"
+            app:layout_constraintTop_toBottomOf="@+id/overview" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cast_recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/cast_label"
+            app:layout_constraintTop_toBottomOf="@+id/cast_label" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,12 +19,12 @@ import kotlinx.coroutines.withContext
 
 
 class ReviewFragment : Fragment() {
+    private lateinit var manager:LinearLayoutManager
+    private lateinit var adapter: RatedListAdapter
+    private lateinit var ratedMovieList:MutableList<RatedMovie>
+    private lateinit var recyclerView:RecyclerView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_review, container, false)
     }
 
@@ -31,13 +32,35 @@ class ReviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val ratedMovieDB=RatedMovieDB.getDB(context)
         val model:ListViewModel by activityViewModels()
+        val addReviewBtn:FloatingActionButton=view.findViewById(R.id.add_review)
+
+        addReviewBtn.setOnClickListener{
+            val dialog=MyRatingDialog()
+            dialog.show(parentFragmentManager,"")
+
+            /*GlobalScope.launch {
+                val job=launch {
+                    withContext(Dispatchers.IO){
+                        ratedMovieList=ratedMovieDB.ratedMovieDao().getRatedList()
+                    }
+                    withContext(Dispatchers.Main){
+                        adapter=RatedListAdapter(ratedMovieList,model)
+                        recyclerView.adapter=adapter
+                        recyclerView.adapter?.notifyItemInserted(0)
+                    }
+                }
+                job.join()
+            }*/
+        }
+
+
         if(ratedMovieDB==null){
             println("No reviews found")
             val group=view.findViewById<Group>(R.id.group)
             group.visibility=View.VISIBLE
         }else{
             GlobalScope.launch {
-                var ratedMovieList = mutableListOf<RatedMovie>()
+                //ratedMovieList = mutableListOf<RatedMovie>()
                 val job=launch {
                     withContext(Dispatchers.IO){
                         ratedMovieList=ratedMovieDB.ratedMovieDao().getRatedList()
@@ -50,9 +73,9 @@ class ReviewFragment : Fragment() {
                         val group=view.findViewById<Group>(R.id.group)
                         group.visibility=View.VISIBLE
                     }
-                    val manager=LinearLayoutManager(context)
-                    val adapter=RatedListAdapter(ratedMovieList,model)
-                    val recyclerView=view.findViewById<RecyclerView>(R.id.rated_movie_recycler)
+                    manager=LinearLayoutManager(context)
+                    adapter=RatedListAdapter(ratedMovieList,model)
+                    recyclerView=view.findViewById<RecyclerView>(R.id.rated_movie_recycler)
                     recyclerView.adapter=adapter
                     recyclerView.layoutManager=manager
                     /*val dividerItemDecoration = DividerItemDecoration(recyclerView.context, manager.getOrientation())
@@ -64,5 +87,7 @@ class ReviewFragment : Fragment() {
             }
         }
     }
+
+
 
 }

@@ -94,6 +94,7 @@ class HomeFragment : Fragment() {
                     val popularity=jsonArray.getJSONObject(i).getString("popularity")
                     val movie=Movie(id,title,(link+imgURI.toString()).toUri(),overview,popularity.toDouble(),(link+bgURI.toString()).toUri())
                     //movieListViewModel.movieList.add(movie)
+                    //dbInstance.getDao().addMovie(movie)
                     list.add(movie)
                 }
                 movieListViewModel.movieList=list
