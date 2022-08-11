@@ -69,7 +69,6 @@ class HomeFragment : Fragment() {
 
     private suspend fun loadData(movieListViewModel: ListViewModel) {
         withContext(Dispatchers.IO){
-            //val url="https://api.themoviedb.org/3/movie/top_rated?api_key=08e4a6a03c5c292c1893f7127324e5f3"
             val url="https://api.themoviedb.org/3/trending/movie/day?api_key=08e4a6a03c5c292c1893f7127324e5f3"
             val connection= URL(url).openConnection() as HttpURLConnection
             val reader= BufferedReader(InputStreamReader(connection.inputStream))

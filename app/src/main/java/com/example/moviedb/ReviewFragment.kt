@@ -23,15 +23,26 @@ class ReviewFragment : Fragment() {
     private lateinit var adapter: RatedListAdapter
     private lateinit var ratedMovieList:MutableList<RatedMovie>
     private lateinit var recyclerView:RecyclerView
+    val model:ListViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_review, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        println("fragmnet - Resume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        println("Pausing - Fragment")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val ratedMovieDB=RatedMovieDB.getDB(context)
-        val model:ListViewModel by activityViewModels()
+
         val addReviewBtn:FloatingActionButton=view.findViewById(R.id.add_review)
 
         addReviewBtn.setOnClickListener{
