@@ -23,7 +23,7 @@ class ReviewFragment : Fragment() {
     private lateinit var adapter: RatedListAdapter
     private lateinit var ratedMovieList:MutableList<RatedMovie>
     private lateinit var recyclerView:RecyclerView
-    val model:ListViewModel by activityViewModels()
+    private val model:ListViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_review, container, false)
