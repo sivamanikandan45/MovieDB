@@ -168,14 +168,14 @@ class MovieActivity : AppCompatActivity() {
                     yearTextView.text=releasedYear
 
                     releaseDateTextView.text=releaseDate
-
+                    val notAvailable="N/A"
                     if(revenue=="0")
-                        revenueTextView.text="NA"
+                        revenueTextView.text=notAvailable
                     else
                         revenueTextView.text=revenue
 
                     if(budget=="0")
-                        budgetTextView.text="NA"
+                        budgetTextView.text=notAvailable
                     else
                         budgetTextView.text=budget
 

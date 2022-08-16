@@ -1,5 +1,7 @@
 package com.example.moviedb
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -13,6 +15,10 @@ interface RatedMovieDao{
     @Query("SELECT * FROM RatedMovie")
     fun getRatedList():MutableList<RatedMovie>
 
+    @Query("SELECT * FROM RatedMovie")
+    fun getRatedLiveList():LiveData<MutableList<RatedMovie>>
+
     @Update
     fun updateReview(ratedMovie: RatedMovie)
+
 }

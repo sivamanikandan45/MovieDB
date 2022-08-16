@@ -26,5 +26,6 @@ abstract class RatedMovieDB:RoomDatabase() {
             }
             //return dbInstance
         }
+
     }
 }

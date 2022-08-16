@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MyRatingDialog:DialogFragment() {
+    val viewModel:ListViewModel by activityViewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_my_rating, container, false)
     }
@@ -54,7 +56,7 @@ class MyRatingDialog:DialogFragment() {
 
             val textField=view.findViewById<AutoCompleteTextView>(R.id.movie_dropdown)
             val movieName=textField.text.toString()
-            val id=getId(viewModel, movieName)
+            val id=viewModel.getId(movieName)
 
             val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
             val ratedValue = ratingBar.rating.toInt()
@@ -72,14 +74,7 @@ class MyRatingDialog:DialogFragment() {
         }
     }
 
-    private fun getId(viewModel: ListViewModel, movieName: String):Int {
-        for (movie in viewModel.movieList) {
-            if (movie.title==movieName) {
-                return movie.id
-            }
-        }
-        return -1
-    }
+
 
     private fun search(id: Int, ratedList: MutableList<RatedMovie>):Boolean {
         for(ratedMovie in ratedList){
