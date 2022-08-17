@@ -1,5 +1,6 @@
 package com.example.moviedb
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -44,6 +45,14 @@ class MovieActivity : AppCompatActivity() {
             withContext(Dispatchers.Main){
                 val recyclerView=findViewById<RecyclerView>(R.id.cast_recycler)
                 adapter=CastListAdapter(list)
+                adapter.setOnItemClickListener(object:CastListAdapter.ItemClickListener{
+                    override fun onItemClick(position: Int) {
+                        val id=list[position].id
+                        val intent=Intent(applicationContext,ActorActivity::class.java)
+                        intent.putExtra("id",id)
+                        startActivity(intent)
+                    }
+                })
                 recyclerView.adapter=adapter
                 manager=LinearLayoutManager(this@MovieActivity)
                 manager.orientation=LinearLayoutManager.HORIZONTAL
@@ -60,6 +69,11 @@ class MovieActivity : AppCompatActivity() {
             editor.putInt("id",id)
             editor.apply()
             dialog.show(supportFragmentManager,"")
+        }
+
+        val backBtn=findViewById<ImageView>(R.id.back)
+        backBtn.setOnClickListener{
+            super.onBackPressed()
         }
 
     }

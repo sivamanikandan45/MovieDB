@@ -20,18 +20,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/movie_title"
+        <ImageView
+            android:id="@+id/back"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Movie Title"
-            android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_pic"/>
+            app:layout_constraintTop_toBottomOf="@+id/movie_pic" />
 
         <TextView
             android:id="@+id/running_time"
@@ -56,17 +69,20 @@
             app:layout_constraintTop_toBottomOf="@+id/tagline"
             app:layout_constraintStart_toStartOf="@+id/tagline"
             />
+
         <TextView
             android:id="@+id/tagline"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_height="wrap_content"
-            android:text="Tagline"
             android:layout_marginTop="10dp"
+            android:text="Tagline"
             android:textColor="@color/white"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@+id/movie_title"
-            app:layout_constraintStart_toStartOf="@+id/movie_title"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
@@ -215,6 +231,7 @@
             android:backgroundTint="#2a2a2a"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -233,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:text="Details"
                     android:paddingStart="16dp"
-                    android:textColor="@color/white"
+                    android:textColor="#fcce13"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"

@@ -9,7 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
 class CastListAdapter(var list:MutableList<Cast>) :RecyclerView.Adapter<CastListAdapter.ViewHolder>(){
-    class ViewHolder(view:View):RecyclerView.ViewHolder(view){
+    private lateinit var listener: ItemClickListener
+
+    fun setOnItemClickListener(listener:ItemClickListener){
+        this.listener=listener
+    }
+
+    interface ItemClickListener{
+        fun onItemClick(position: Int)
+    }
+
+    class ViewHolder(view:View,listener: ItemClickListener):RecyclerView.ViewHolder(view){
         var artistImage:ImageView
         var artistName:TextView
         var charName:TextView
@@ -17,11 +27,15 @@ class CastListAdapter(var list:MutableList<Cast>) :RecyclerView.Adapter<CastList
             artistImage=view.findViewById(R.id.artist_image)
             artistName=view.findViewById(R.id.artist_name)
             charName=view.findViewById(R.id.char_name)
+
+            view.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastListAdapter.ViewHolder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.cast_item,parent,false)
-        return ViewHolder(view)
+        return ViewHolder(view,listener)
     }
 
     override fun onBindViewHolder(holder: CastListAdapter.ViewHolder, position: Int) {
