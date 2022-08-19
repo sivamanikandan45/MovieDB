@@ -9,14 +9,12 @@ import androidx.room.Update
 
 @Dao
 interface RatedMovieDao{
+
     @Insert
     fun addReview(ratedMovieDao: RatedMovie)
 
     @Query("SELECT * FROM RatedMovie")
     fun getRatedList():MutableList<RatedMovie>
-
-    @Query("SELECT * FROM RatedMovie")
-    fun getRatedLiveList():LiveData<MutableList<RatedMovie>>
 
     @Update
     fun updateReview(ratedMovie: RatedMovie)

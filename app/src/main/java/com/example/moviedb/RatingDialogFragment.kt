@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RatingDialogFragment:DialogFragment() {
-    private val viewModel:ListViewModel by activityViewModels()
+    //private val viewModel:ListViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +42,6 @@ class RatingDialogFragment:DialogFragment() {
                 job.join()
             }
             dismiss()
-
         }
     }
 
@@ -60,10 +59,13 @@ class RatingDialogFragment:DialogFragment() {
             val ratedMovie= id?.let { RatedMovie(it,ratedValue,comment.toString()) }
             if(ratedMovie!=null){
                 val ratedList=dbInstance.ratedMovieDao().getRatedList()
+                //val ratedList=viewModel.getRatedMovieList()
                 if(search(id,ratedList)){
                     dbInstance.ratedMovieDao().updateReview(ratedMovie)
+                    //viewModel.updateRatedMovie(ratedMovie)
                 }else{
                     dbInstance.ratedMovieDao().addReview(ratedMovie)
+                    //viewModel.insertRatedMovie(ratedMovie)
                 }
             }
         }

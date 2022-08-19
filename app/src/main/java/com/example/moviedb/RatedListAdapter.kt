@@ -9,8 +9,14 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class RatedListAdapter(private val list: MutableList<RatedMovie>, val model: ListViewModel):RecyclerView.Adapter<RatedListAdapter.ViewHolder>() {
+class RatedListAdapter(val model: ListViewModel):RecyclerView.Adapter<RatedListAdapter.ViewHolder>() {
     private lateinit var listener:ItemClickListener
+
+    var list=ArrayList<RatedMovie>()
+
+    fun setData(list:ArrayList<RatedMovie>){
+        this.list=list
+    }
 
     fun setOnItemClickListener(listener:ItemClickListener){
         this.listener=listener

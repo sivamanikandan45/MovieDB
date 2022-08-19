@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 
 class SettingsFragment : Fragment() {
     override fun onCreateView(
@@ -24,10 +26,25 @@ class SettingsFragment : Fragment() {
         radioGrp.setOnCheckedChangeListener { group, checkedId ->
             when(checkedId){
                 R.id.grid_view->{viewModel.viewType.value=ViewType.GRID
-                println("Grid view is slected")}
+                println("Grid view is selected")}
                 R.id.list_view->{viewModel.viewType.value=ViewType.LIST
-                    println("List view is slected")}
+                    println("List view is selected")}
             }
         }
+
+        viewModel.viewType.observe(viewLifecycleOwner, Observer {
+            if(it==ViewType.LIST){
+                val listViewBtn=view.findViewById<RadioButton>(R.id.list_view)
+                listViewBtn.isChecked=true
+                val gridViewBtn=view.findViewById<RadioButton>(R.id.grid_view)
+                gridViewBtn.isChecked=false
+            }
+            else if(it==ViewType.GRID){
+                val listViewBtn=view.findViewById<RadioButton>(R.id.list_view)
+                listViewBtn.isChecked=false
+                val gridViewBtn=view.findViewById<RadioButton>(R.id.grid_view)
+                gridViewBtn.isChecked=true
+            }
+        })
     }
 }

@@ -1,5 +1,6 @@
 package com.example.moviedb
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -22,7 +24,6 @@ class MyRatingDialog:DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel:ListViewModel by activityViewModels()
         val dropDownTextField=view.findViewById<AutoCompleteTextView>(R.id.movie_dropdown)
         val list= mutableListOf<String>()
         for(movie in viewModel.movieList){
@@ -42,7 +43,7 @@ class MyRatingDialog:DialogFragment() {
         submitBtn.setOnClickListener {
             GlobalScope.launch {
                 val job=launch {
-                    addRating(view,viewModel)
+                    addRating(view)
                 }
                 job.join()
             }
@@ -50,7 +51,7 @@ class MyRatingDialog:DialogFragment() {
         }
     }
 
-    private suspend fun addRating(view: View, viewModel: ListViewModel) {
+    private suspend fun addRating(view: View) {
         withContext(Dispatchers.IO) {
             val dbInstance = RatedMovieDB.getDB(context)
 
@@ -66,9 +67,11 @@ class MyRatingDialog:DialogFragment() {
             if (ratedMovie != null) {
                 val ratedList = dbInstance.ratedMovieDao().getRatedList()
                 if (search(id, ratedList)) {
-                    dbInstance.ratedMovieDao().updateReview(ratedMovie)
+                    //dbInstance.ratedMovieDao().updateReview(ratedMovie)
+                    viewModel.updateRatedMovie(ratedMovie)
                 } else {
-                    dbInstance.ratedMovieDao().addReview(ratedMovie)
+                    //dbInstance.ratedMovieDao().addReview(ratedMovie)
+                    viewModel.insertRatedMovie(ratedMovie)
                 }
             }
         }
@@ -84,4 +87,5 @@ class MyRatingDialog:DialogFragment() {
         }
         return false
     }
+
 }

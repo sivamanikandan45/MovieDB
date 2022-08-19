@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class HomeFragment : Fragment() {
+    private lateinit var manager: GridLayoutManager
+    private lateinit var recyclerView:RecyclerView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -30,7 +33,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lateinit var adapter:MovieListAdapter
         super.onViewCreated(view, savedInstanceState)
-        val manager= GridLayoutManager(activity,3)
+        manager= GridLayoutManager(activity,3)
         val movieListViewModel:ListViewModel by activityViewModels()
         GlobalScope.launch {
             val job= GlobalScope.launch {
@@ -45,8 +48,8 @@ class HomeFragment : Fragment() {
                     val id=movieListViewModel.movieList[position].id
 
                     intent.putExtra("id",id)
-                    movieListViewModel.movie.value=movieListViewModel.movieList[position]
-                    println(movieListViewModel.movieList)
+                    //movieListViewModel.movie.value=movieListViewModel.movieList[position]
+                    //println(movieListViewModel.movieList)
                     //intent.putExtra("movie",movieListViewModel.movie.value)
                     startActivity(intent)
                 }
@@ -54,13 +57,25 @@ class HomeFragment : Fragment() {
             //val jsonObject = JSONTokener(con).nextValue() as JSONObject
             GlobalScope.launch(Dispatchers.Main) {
                // movieListViewModel.viewType.observe(this,)
-                val recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
+                recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 recyclerView.adapter=adapter
                 //manager.orientation=RecyclerView.HORIZONTAL
                 recyclerView.layoutManager=manager
-
             }
         }
+
+        movieListViewModel.viewType.observe(viewLifecycleOwner, Observer {
+            if(it==ViewType.LIST){
+                manager=GridLayoutManager(context,1)
+                recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
+                recyclerView.layoutManager=manager
+            }
+            else{
+                recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
+                manager=GridLayoutManager(context,3)
+                recyclerView.layoutManager=manager
+            }
+        })
     }
 
 

@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         println("Main oda resume pa idhu")
     }
@@ -42,6 +42,6 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         println("Pausing.....")
-    }
+    }*/
 
 }
