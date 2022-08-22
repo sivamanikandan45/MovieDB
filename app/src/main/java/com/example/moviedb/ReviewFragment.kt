@@ -32,6 +32,7 @@ class ReviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val ratedMovieDB=RatedMovieDB.getDB(context)
+        val group=view.findViewById<Group>(R.id.group)
 
         val addReviewBtn:FloatingActionButton=view.findViewById(R.id.add_review)
 
@@ -40,51 +41,53 @@ class ReviewFragment : Fragment() {
             dialog.show(parentFragmentManager,"")
         }
 
-        if(ratedMovieDB==null){
+        //viewModel.getRatedMovieListSize()==0
+        //println("list value is ${viewModel.getRatedMovieListSize()}")
+        /*if(viewModel.getAllRatedMovieObservers().value?.size== 0){
             println("No reviews found")
             val group=view.findViewById<Group>(R.id.group)
             group.visibility=View.VISIBLE
-        }else{
-            recyclerView=view.findViewById(R.id.rated_movie_recycler)
-            viewModel.getAllRatedMovieObservers().observe(viewLifecycleOwner, Observer {
-                adapter.setData(ArrayList(it))
-                adapter.notifyDataSetChanged()
-            })
-            manager=LinearLayoutManager(context)
-            adapter= RatedListAdapter(viewModel)
-            GlobalScope.launch{
-                val job=launch {
-                    adapter.setData(ArrayList(viewModel.getRatedMovieList()))
-                }
-                job.join()
+        }*/
 
-                withContext(Dispatchers.Main){
-                    recyclerView.adapter=adapter
-                    recyclerView.layoutManager=manager
+        recyclerView=view.findViewById(R.id.rated_movie_recycler)
+        viewModel.getAllRatedMovieObservers().observe(viewLifecycleOwner, Observer {
+            adapter.setData(ArrayList(it))
+            //println(viewModel.getAllRatedMovieObservers().value?.size)
+            //group.visibility=View.INVISIBLE
+            adapter.notifyDataSetChanged()
+        })
+        manager=LinearLayoutManager(context)
+        adapter= RatedListAdapter(viewModel)
+        GlobalScope.launch{
+            val job=launch {
+                adapter.setData(ArrayList(viewModel.getRatedMovieList()))
+            }
+            job.join()
+
+            withContext(Dispatchers.Main){
+                recyclerView.adapter=adapter
+                recyclerView.layoutManager=manager
+            }
+        }
+
+        adapter.setOnItemClickListener(object:RatedListAdapter.ItemClickListener {
+            override fun onItemClick(position: Int) {
+                val dialog = RatingDescriptionDialog()
+                val ratedMovieViewModel: RatedMovieViewModel by activityViewModels()
+                GlobalScope.launch {
+                    val job=launch {
+                        ratedMovieList=viewModel.getRatedMovieList()
+                        println(ratedMovieList)
+                    }
+                    job.join()
+                    val movieName:String=getNameById(ratedMovieList[position].id)
+                    ratedMovieViewModel.movieName=movieName
+                    ratedMovieViewModel.comment=ratedMovieList[position].comment
+                    ratedMovieViewModel.rating=ratedMovieList[position].rating
+                    dialog.show(parentFragmentManager,"")
                 }
             }
-
-
-
-            adapter.setOnItemClickListener(object:RatedListAdapter.ItemClickListener {
-                override fun onItemClick(position: Int) {
-                    val dialog = RatingDescriptionDialog()
-                    val ratedMovieViewModel: RatedMovieViewModel by activityViewModels()
-                    GlobalScope.launch {
-                        val job=launch {
-                            ratedMovieList=viewModel.getRatedMovieList()
-                            println(ratedMovieList)
-                        }
-                        job.join()
-                        val movieName:String=getNameById(ratedMovieList[position].id)
-                        ratedMovieViewModel.movieName=movieName
-                        ratedMovieViewModel.comment=ratedMovieList[position].comment
-                        ratedMovieViewModel.rating=ratedMovieList[position].rating
-                        dialog.show(parentFragmentManager,"")
-                    }
-                }
-            })
-        }
+        })
     }
 
     private fun getNameById(id: Int): String {

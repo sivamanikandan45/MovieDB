@@ -144,7 +144,7 @@ class MovieActivity : AppCompatActivity() {
                 runtime="${hr}hr ${minute}m"
 
 
-                println("RUnnning time is $hr $minute")
+                println("Running time is $hr $minute")
 
 
                 val releaseDate=jsonObject.getString("release_date")

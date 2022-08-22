@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ListViewModel(application: Application) :AndroidViewModel(application){
 
@@ -16,6 +18,7 @@ class ListViewModel(application: Application) :AndroidViewModel(application){
     lateinit var allRatedMovies:MutableLiveData<List<RatedMovie>>
     init {
         allRatedMovies= MutableLiveData()
+        viewType.value=ViewType.GRID
     }
 
     fun getAllRatedMovieObservers():MutableLiveData<List<RatedMovie>>
@@ -51,5 +54,9 @@ class ListViewModel(application: Application) :AndroidViewModel(application){
     suspend fun getRatedMovieList():List<RatedMovie>{
         val dao=RatedMovieDB.getDB(getApplication<Application?>().applicationContext).ratedMovieDao()
         return dao.getRatedList()
+    }
+
+    fun getRatedMovieListSize(): Int? {
+        return allRatedMovies.value?.size
     }
 }

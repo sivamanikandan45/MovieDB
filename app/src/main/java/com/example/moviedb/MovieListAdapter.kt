@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso
 
 class MovieListAdapter(var list: List<Movie>):RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
     private lateinit var listener:ItemClickListener
+    private var viewType: ViewType =ViewType.GRID
 
     interface ItemClickListener{
         fun onItemClick(position:Int)
@@ -17,6 +18,15 @@ class MovieListAdapter(var list: List<Movie>):RecyclerView.Adapter<MovieListAdap
 
     fun setOnItemClickListener(listener: ItemClickListener){
         this.listener=listener
+    }
+
+    fun setViewType(viewType: ViewType){
+        this.viewType=viewType
+        println("View type is ${this.viewType}")
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return this.viewType.ordinal
     }
 
 
@@ -35,8 +45,16 @@ class MovieListAdapter(var list: List<Movie>):RecyclerView.Adapter<MovieListAdap
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view=LayoutInflater.from(parent.context).inflate(R.layout.movie_list_item,parent,false)
-        return ViewHolder(view,listener)
+        return if(viewType == ViewType.LIST.ordinal){
+            val view=LayoutInflater.from(parent.context).inflate(R.layout.movie_list_listitem,parent,false)
+            //println("creting list view")
+            ViewHolder(view,listener)
+        } else{
+            val view=LayoutInflater.from(parent.context).inflate(R.layout.movie_list_item,parent,false)
+            ViewHolder(view,listener)
+        }
+        /*val view=LayoutInflater.from(parent.context).inflate(R.layout.movie_list_item,parent,false)
+        return ViewHolder(view,listener)*/
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

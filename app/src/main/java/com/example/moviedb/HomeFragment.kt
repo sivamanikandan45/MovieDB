@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,7 +24,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class HomeFragment : Fragment() {
-    private lateinit var manager: GridLayoutManager
+    private lateinit var manager: RecyclerView.LayoutManager
     private lateinit var recyclerView:RecyclerView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -41,38 +42,56 @@ class HomeFragment : Fragment() {
             }
             job.join()
             adapter=MovieListAdapter(movieListViewModel.movieList)
+            if(movieListViewModel.viewType.value==ViewType.GRID){
+                adapter.setViewType(ViewType.GRID)
+            }else if(movieListViewModel.viewType.value==ViewType.LIST){
+                adapter.setViewType(ViewType.LIST)
+            }
             adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
                 override fun onItemClick(position: Int) {
-                    //movieListViewModel.position=position
                     val intent= Intent(activity,MovieActivity::class.java)
                     val id=movieListViewModel.movieList[position].id
-
                     intent.putExtra("id",id)
-                    //movieListViewModel.movie.value=movieListViewModel.movieList[position]
-                    //println(movieListViewModel.movieList)
-                    //intent.putExtra("movie",movieListViewModel.movie.value)
                     startActivity(intent)
                 }
             })
-            //val jsonObject = JSONTokener(con).nextValue() as JSONObject
             GlobalScope.launch(Dispatchers.Main) {
-               // movieListViewModel.viewType.observe(this,)
                 recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 recyclerView.adapter=adapter
-                //manager.orientation=RecyclerView.HORIZONTAL
                 recyclerView.layoutManager=manager
             }
         }
 
         movieListViewModel.viewType.observe(viewLifecycleOwner, Observer {
             if(it==ViewType.LIST){
-                manager=GridLayoutManager(context,1)
+                manager=LinearLayoutManager(context)
                 recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
+                adapter= MovieListAdapter(movieListViewModel.movieList)
+                adapter.setViewType(ViewType.LIST)
+                adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
+                    override fun onItemClick(position: Int) {
+                        val intent= Intent(activity,MovieActivity::class.java)
+                        val id=movieListViewModel.movieList[position].id
+                        intent.putExtra("id",id)
+                        startActivity(intent)
+                    }
+                })
                 recyclerView.layoutManager=manager
             }
             else{
                 recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 manager=GridLayoutManager(context,3)
+                adapter=MovieListAdapter(movieListViewModel.movieList)
+                adapter.setViewType(ViewType.GRID)
+                adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
+                    override fun onItemClick(position: Int) {
+                        val intent= Intent(activity,MovieActivity::class.java)
+                        val id=movieListViewModel.movieList[position].id
+                        intent.putExtra("id",id)
+                        startActivity(intent)
+                    }
+                })
+                recyclerView.adapter=adapter
                 recyclerView.layoutManager=manager
             }
         })

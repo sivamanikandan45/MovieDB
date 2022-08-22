@@ -41,6 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/layout_settings">
 
         <RadioButton
+            android:buttonTint="#fcce13"
             android:paddingStart="16dp"
             android:checked="true"
             android:id="@+id/grid_view"
@@ -52,7 +53,7 @@
 
         <RadioButton
             android:paddingStart="16dp"
-
+android:buttonTint="#fcce13"
             android:id="@+id/list_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -20,6 +20,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--<androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:foregroundTint="@color/white"/>
+-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rated_movie_recycler"
         android:layout_width="match_parent"
