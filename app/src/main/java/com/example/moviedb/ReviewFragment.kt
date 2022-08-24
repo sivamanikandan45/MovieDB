@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.Group
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,11 +41,11 @@ class ReviewFragment : Fragment() {
 
         //viewModel.getRatedMovieListSize()==0
         //println("list value is ${viewModel.getRatedMovieListSize()}")
-        /*if(viewModel.getAllRatedMovieObservers().value?.size== 0){
+        if(viewModel.getAllRatedMovieObservers().value?.size==0){
             println("No reviews found")
             val group=view.findViewById<Group>(R.id.group)
             group.visibility=View.VISIBLE
-        }*/
+        }
 
         recyclerView=view.findViewById(R.id.rated_movie_recycler)
         viewModel.getAllRatedMovieObservers().observe(viewLifecycleOwner, Observer {
@@ -72,7 +70,7 @@ class ReviewFragment : Fragment() {
 
         adapter.setOnItemClickListener(object:RatedListAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
-                val dialog = RatingDescriptionDialog()
+                val dialog = RatingDescriptionFragment()
                 val ratedMovieViewModel: RatedMovieViewModel by activityViewModels()
                 GlobalScope.launch {
                     val job=launch {
@@ -84,7 +82,14 @@ class ReviewFragment : Fragment() {
                     ratedMovieViewModel.movieName=movieName
                     ratedMovieViewModel.comment=ratedMovieList[position].comment
                     ratedMovieViewModel.rating=ratedMovieList[position].rating
-                    dialog.show(parentFragmentManager,"")
+                    //dialog.show(parentFragmentManager,"")
+                    /*val container=view.findViewById<FragmentContainerView>(R.id.fragmentContainerView)
+                    container*/
+                    parentFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        addToBackStack(null)
+                        replace(R.id.fragmentContainerView,RatingDescriptionFragment())
+                    }
                 }
             }
         })

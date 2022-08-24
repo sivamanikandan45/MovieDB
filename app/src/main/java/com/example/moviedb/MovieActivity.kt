@@ -76,6 +76,12 @@ class MovieActivity : AppCompatActivity() {
             super.onBackPressed()
         }
 
+        val otherReview:TextView=findViewById(R.id.rating_count)
+        otherReview.setOnClickListener{
+            val intent=Intent(this,OthersReviewActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private suspend fun gatCastData(id: Int):MutableList<Cast> {

@@ -34,6 +34,21 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        /*when(viewModel.viewType.value){
+            ViewType.LIST->{
+                val gridViewBtn=view.findViewById<RadioButton>(R.id.grid_view)
+                gridViewBtn.isChecked=false
+                val listViewBtn=view.findViewById<RadioButton>(R.id.list_view)
+                listViewBtn.isChecked=true
+            }
+            ViewType.GRID->{
+                val listViewBtn=view.findViewById<RadioButton>(R.id.list_view)
+                listViewBtn.isChecked=false
+                val gridViewBtn=view.findViewById<RadioButton>(R.id.grid_view)
+                gridViewBtn.isChecked=true
+            }
+        }*/
+
         viewModel.viewType.observe(viewLifecycleOwner, Observer {
             if(it==ViewType.LIST){
                 //val radioGroup

@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
@@ -35,7 +34,7 @@ class RatedListAdapter(val model: ListViewModel):RecyclerView.Adapter<RatedListA
             imageView= view.findViewById(R.id.rated_movie_pic)
             rateMovieTitle=view.findViewById(R.id.rated_movie_title)
             ratedValue=view.findViewById(R.id.rated_value)
-            review=view.findViewById(R.id.rated_movie_comment)
+            review=view.findViewById(R.id.user_comment)
             view.setOnClickListener {
                 listener.onItemClick(adapterPosition)
             }

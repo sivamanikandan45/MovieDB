@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/rated_movie_comment"
+        android:id="@+id/user_comment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="abcdefghijklmnopqrstuvwxyz"
