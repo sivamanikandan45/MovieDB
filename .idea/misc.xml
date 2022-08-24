@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/back.xml" value="0.119" />
         <entry key="app/src/main/res/drawable/home.xml" value="0.1925" />
+        <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1245" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2375" />
         <entry key="app/src/main/res/drawable/icon_navigation_view.xml" value="0.119" />
         <entry key="app/src/main/res/drawable/review.xml" value="0.1925" />
@@ -14,6 +15,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33055555555555555" />
         <entry key="app/src/main/res/layout/activity_movie.xml" value="0.33055555555555555" />
         <entry key="app/src/main/res/layout/activity_others_review.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_public_review.xml" value="0.28804347826086957" />
         <entry key="app/src/main/res/layout/cast_item.xml" value="0.7119689941406251" />
         <entry key="app/src/main/res/layout/dialog_my_rating.xml" value="0.20219916744508606" />
         <entry key="app/src/main/res/layout/dialog_rating_description.xml" value="0.31871833248414855" />

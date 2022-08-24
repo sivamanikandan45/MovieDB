@@ -47,7 +47,7 @@ class ReviewFragment : Fragment() {
             group.visibility=View.VISIBLE
         }
 
-        recyclerView=view.findViewById(R.id.rated_movie_recycler)
+        recyclerView=view.findViewById(R.id.public_review_recycler)
         viewModel.getAllRatedMovieObservers().observe(viewLifecycleOwner, Observer {
             adapter.setData(ArrayList(it))
             //println(viewModel.getAllRatedMovieObservers().value?.size)
@@ -82,6 +82,8 @@ class ReviewFragment : Fragment() {
                     ratedMovieViewModel.movieName=movieName
                     ratedMovieViewModel.comment=ratedMovieList[position].comment
                     ratedMovieViewModel.rating=ratedMovieList[position].rating
+                    ratedMovieViewModel.imgUrl=getImageUrlById(ratedMovieList[position].id)
+                    ratedMovieViewModel.posterUrl=getPosterUrlById(ratedMovieList[position].id)
                     //dialog.show(parentFragmentManager,"")
                     /*val container=view.findViewById<FragmentContainerView>(R.id.fragmentContainerView)
                     container*/
@@ -95,6 +97,15 @@ class ReviewFragment : Fragment() {
         })
     }
 
+    private fun getPosterUrlById(id: Int): String {
+        for(movie in viewModel.movieList){
+            if(movie.id==id){
+                return movie.backgroundImg.toString()
+            }
+        }
+        return ""
+    }
+
     private fun getNameById(id: Int): String {
         for(movie in viewModel.movieList){
             if(movie.id==id)
@@ -102,5 +113,14 @@ class ReviewFragment : Fragment() {
         }
         return ""
     }
+    private fun getImageUrlById(id:Int):String{
+        for(movie in viewModel.movieList){
+            if(movie.id==id){
+                return movie.posterimg.toString()
+            }
+        }
+        return ""
+    }
+
 
 }

@@ -1,12 +1,10 @@
 package com.example.moviedb
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,9 +19,6 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 class MovieActivity : AppCompatActivity() {
     lateinit var adapter:CastListAdapter
@@ -78,7 +73,8 @@ class MovieActivity : AppCompatActivity() {
 
         val otherReview:TextView=findViewById(R.id.rating_count)
         otherReview.setOnClickListener{
-            val intent=Intent(this,OthersReviewActivity::class.java)
+            val intent=Intent(this,PublicReviewActivity::class.java)
+            intent.putExtra("id",id)
             startActivity(intent)
         }
 

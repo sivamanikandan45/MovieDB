@@ -33,7 +33,7 @@ class RatedListAdapter(val model: ListViewModel):RecyclerView.Adapter<RatedListA
         init {
             imageView= view.findViewById(R.id.rated_movie_pic)
             rateMovieTitle=view.findViewById(R.id.rated_movie_title)
-            ratedValue=view.findViewById(R.id.rated_value)
+            ratedValue=view.findViewById(R.id.user_rated_value)
             review=view.findViewById(R.id.user_comment)
             view.setOnClickListener {
                 listener.onItemClick(adapterPosition)
