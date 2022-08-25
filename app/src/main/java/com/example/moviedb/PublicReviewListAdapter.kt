@@ -10,24 +10,20 @@ import com.squareup.picasso.Picasso
 
 class PublicReviewListAdapter(var list:List<PublicReview>):RecyclerView.Adapter<PublicReviewListAdapter.ViewHolder>(){
 
-    /*lateinit var list:List<PublicReview>
-
-    fun setData(list:List<PublicReview>){
-        this.list=list
-    }*/
-
     class ViewHolder(view:View):RecyclerView.ViewHolder(view){
         var avatarImgView:ImageView
         var authorNameTv:TextView
         var accountTv:TextView
         var commentTv:TextView
         var ratingTv:TextView
+        var commentExapndedTextView:TextView
         init{
             avatarImgView=view.findViewById(R.id.avatar)
             authorNameTv=view.findViewById(R.id.author_name)
             accountTv=view.findViewById(R.id.user_name)
             commentTv=view.findViewById(R.id.user_comment)
             ratingTv=view.findViewById(R.id.user_rated_value)
+            commentExapndedTextView=view.findViewById(R.id.user_comment_expanded)
         }
     }
 
@@ -35,7 +31,7 @@ class PublicReviewListAdapter(var list:List<PublicReview>):RecyclerView.Adapter<
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val view=LayoutInflater.from(parent.context).inflate(R.layout.user_review_item,parent,false)
+        val view=LayoutInflater.from(parent.context).inflate(R.layout.public_review_item,parent,false)
         return ViewHolder(view)
     }
 
@@ -51,7 +47,33 @@ class PublicReviewListAdapter(var list:List<PublicReview>):RecyclerView.Adapter<
         holder.authorNameTv.text=list[position].name
         holder.accountTv.text=list[position].account
         holder.commentTv.text=list[position].comment
+        holder.commentExapndedTextView.text=list[position].comment
         holder.ratingTv.text=list[position].rating+"/10"
+
+        //val isVisible=list[position].isVisible
+        if(list[position].isVisible)
+        {
+            holder.commentExapndedTextView.visibility=View.VISIBLE
+            holder.commentTv.visibility=View.GONE
+        } else{
+            holder.commentExapndedTextView.visibility=View.GONE
+            holder.commentTv.visibility=View.VISIBLE
+        }
+
+        holder.commentTv.setOnClickListener {
+            //notifyItemChanged(position)
+            list[position].isVisible=!list[position].isVisible
+            holder.commentExapndedTextView.visibility=View.VISIBLE
+            holder.commentTv.visibility=View.GONE
+        }
+
+        holder.commentExapndedTextView.setOnClickListener {
+            //notifyItemChanged(position)
+            list[position].isVisible=!list[position].isVisible
+            holder.commentExapndedTextView.visibility=View.GONE
+            holder.commentTv.visibility=View.VISIBLE
+        }
+
     }
 
     override fun getItemCount(): Int {
