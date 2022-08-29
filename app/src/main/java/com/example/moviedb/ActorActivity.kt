@@ -53,6 +53,7 @@ class ActorActivity : AppCompatActivity() {
                         val artistImg:ImageView=findViewById(R.id.cast_img)
                         val notAvailable="N/A"
                         castName.text=name
+                        supportActionBar?.title=name
 
 
                         if(biography=="null"||biography=="")
@@ -78,11 +79,6 @@ class ActorActivity : AppCompatActivity() {
             }
             job.join()
 
-        }
-
-        val backBtn=findViewById<ImageView>(R.id.back)
-        backBtn.setOnClickListener{
-            super.onBackPressed()
         }
     }
 }

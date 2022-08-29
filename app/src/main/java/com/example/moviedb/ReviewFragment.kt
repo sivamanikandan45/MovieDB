@@ -1,9 +1,9 @@
 package com.example.moviedb
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
@@ -29,6 +29,9 @@ class ReviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /*(activity as AppCompatActivity).supportActionBar?.show()*/
+        (activity as AppCompatActivity).supportActionBar?.title="My Reviews"
+        (activity as AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         val ratedMovieDB=RatedMovieDB.getDB(context)
         val group=view.findViewById<Group>(R.id.group)
 
@@ -39,6 +42,7 @@ class ReviewFragment : Fragment() {
             dialog.show(parentFragmentManager,"")
         }
 
+
         //viewModel.getRatedMovieListSize()==0
         //println("list value is ${viewModel.getRatedMovieListSize()}")
         if(viewModel.getAllRatedMovieObservers().value?.size==0){
@@ -48,6 +52,18 @@ class ReviewFragment : Fragment() {
         }
 
         recyclerView=view.findViewById(R.id.public_review_recycler)
+        recyclerView.setOnScrollListener(object: RecyclerView.OnScrollListener() {
+            val addReviewBtn:FloatingActionButton=view.findViewById(R.id.add_review)
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if(dy>0){
+                    addReviewBtn.hide()
+                }
+                else{
+                    addReviewBtn.show()
+                }
+            }
+        })
+
         viewModel.getAllRatedMovieObservers().observe(viewLifecycleOwner, Observer {
             adapter.setData(ArrayList(it))
             //println(viewModel.getAllRatedMovieObservers().value?.size)

@@ -7,7 +7,7 @@
     <!--android:layout_height="148dp"-->
     <androidx.cardview.widget.CardView
         android:layout_width="344dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="#2a2a2a"
         app:cardCornerRadius="10dp"
         android:elevation="1dp"
@@ -16,8 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content">
-
-        <!--Card-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,14 +32,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/circular" />
             <!--
-            android:layout_marginTop="16dp"-->
+            android:layout_marginTop="16dp"
+            android:firstBaselineToTopHeight="32dp"-->
             <TextView
                 android:id="@+id/author_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:firstBaselineToTopHeight="32dp"
+                android:layout_marginTop="16dp"
                 android:text="Author name"
                 android:maxLines="1"
                 android:ellipsize="end"
@@ -80,14 +79,14 @@
             <!--android:visibility=""-->
             <!--android:maxLines="3"
             android:ellipsize="end"-->
-
+            <!--android:firstBaselineToTopHeight="28dp"-->
             <TextView
                 android:id="@+id/user_comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:firstBaselineToTopHeight="28dp"
+                android:layout_marginTop="14dp"
                 android:justificationMode="inter_word"
                 android:text="Owen (Chris Pratt) and Claire (Bryce Dallas Howard) are living in the remote wilderness with Maisie (Isabella Sermon), whom they are desperate to protect. From what? Well it turns out she is a bit of a miraculous conception from the Lockwood dynasty that co-founded the original park with Hammond and is very much on the radar of corporate megalomanic Dodgson (Campbell Scott) whose company is devising super-engineered locusts to devour great swathes of crops across the United States that are not grown from their own brand of seed."
                 android:textColor="#a9a9a9"
@@ -107,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:firstBaselineToTopHeight="28dp"
+                android:layout_marginTop="14dp"
                 android:justificationMode="inter_word"
                 android:text="Owen (Chris Pratt) and Claire (Bryce Dallas Howard) are living in the remote wilderness with Maisie (Isabella Sermon), whom they are desperate to protect. From what? Well it turns out she is a bit of a miraculous conception from the Lockwood dynasty that co-founded the original park with Hammond and is very much on the radar of corporate megalomanic Dodgson (Campbell Scott) whose company is devising super-engineered locusts to devour great swathes of crops across the United States that are not grown from their own brand of seed."
                 android:textColor="#a9a9a9"
@@ -150,6 +149,5 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

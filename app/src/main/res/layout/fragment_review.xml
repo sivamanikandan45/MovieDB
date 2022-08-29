@@ -7,19 +7,6 @@
     android:background="#212121"
     tools:context=".ReviewFragment">
 
-    <TextView
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:id="@+id/public_review_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Reviews"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <!--<androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -28,10 +15,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/public_review_recycler"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/public_review_label" />
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/empty_img"
@@ -58,9 +43,9 @@
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:constraint_referenced_ids="empty_img,no_record" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

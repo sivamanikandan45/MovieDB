@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class MovieListAdapter(var list: List<Movie>):RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter():RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
     private lateinit var listener:ItemClickListener
     private var viewType: ViewType =ViewType.GRID
+    private lateinit var list: List<Movie>
 
     interface ItemClickListener{
         fun onItemClick(position:Int)
@@ -65,6 +66,10 @@ class MovieListAdapter(var list: List<Movie>):RecyclerView.Adapter<MovieListAdap
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun setData(arrayList: ArrayList<Movie>) {
+        this.list=arrayList
     }
 }
 

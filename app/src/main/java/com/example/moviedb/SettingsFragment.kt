@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 
@@ -21,6 +22,8 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title="Settings"
+        (activity as AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         val viewModel:ListViewModel by activityViewModels()
         val radioGrp:RadioGroup=view.findViewById(R.id.view_settings)
         radioGrp.setOnCheckedChangeListener { group, checkedId ->

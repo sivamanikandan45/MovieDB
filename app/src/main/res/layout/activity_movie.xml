@@ -20,16 +20,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
         <TextView
             android:id="@+id/movie_title"
@@ -123,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/review"
                     android:drawableTint="@color/white"
-                    android:text="1234567"
+                    android:text="Reviews"
                     android:ems="6"
                     android:textColor="@color/white"
                     android:textStyle="bold"

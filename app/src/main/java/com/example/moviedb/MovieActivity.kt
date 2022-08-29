@@ -3,6 +3,7 @@ package com.example.moviedb
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
@@ -25,11 +26,15 @@ class MovieActivity : AppCompatActivity() {
     lateinit var manager: LinearLayoutManager
 
     private lateinit var list:MutableList<Cast>
+    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
+    }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val id=intent.getIntExtra("id",0)
-
+        supportActionBar?.title="My Reviews"
         GlobalScope.launch {
             val job=launch{
                 getData(id)
@@ -66,10 +71,7 @@ class MovieActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager,"")
         }
 
-        val backBtn=findViewById<ImageView>(R.id.back)
-        backBtn.setOnClickListener{
-            super.onBackPressed()
-        }
+
 
         val otherReview:TextView=findViewById(R.id.rating_count)
         otherReview.setOnClickListener{
@@ -175,12 +177,13 @@ class MovieActivity : AppCompatActivity() {
                     //movieImg.setImageURI(backgroundImg.toUri())
                     Picasso.get().load(link+backgroundImg).into(movieImg)
                     movieName.text=title
+                    supportActionBar?.title=title
                     popularity.text=popularityCount
                     overview.text=overviewText
                     taglineTextView.text=tagline
                     rating += "/10"
                     ratingValue.text=rating
-                    ratingCount.text=rateCount
+                    //ratingCount.text=rateCount
                     yearTextView.text=releasedYear
 
                     releaseDateTextView.text=releaseDate

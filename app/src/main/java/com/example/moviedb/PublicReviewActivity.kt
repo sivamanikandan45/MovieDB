@@ -2,6 +2,8 @@ package com.example.moviedb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.constraintlayout.widget.Group
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +26,7 @@ class PublicReviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_public_review)
+        supportActionBar?.title="Public Reviews"
 
         val id=intent.getIntExtra("id",0)
 
@@ -58,22 +61,30 @@ class PublicReviewActivity : AppCompatActivity() {
             if(response.isNotEmpty()){
                 val jsonObject=JSONTokener(response).nextValue() as JSONObject
                 val jsonArray=jsonObject.getJSONArray("results")
-                for(i in 0 until jsonArray.length()){
-                    val reviewObject=jsonArray.getJSONObject(i).getJSONObject("author_details")
-                    val imgUrl=reviewObject.getString("avatar_path")
-                    var comment=jsonArray.getJSONObject(i).getString("content")
-                    var userName=reviewObject.getString("name")
-                    val account="@"+reviewObject.getString("username")
-                    var rating=reviewObject.getString("rating")
+                println(jsonArray.length())
+                if(jsonArray.length()==0){
+                    withContext(Dispatchers.Main){
+                        val group=findViewById<Group>(R.id.public_review_group)
+                        group.visibility=View.VISIBLE
+                    }
+                }else{
+                    for(i in 0 until jsonArray.length()){
+                        val reviewObject=jsonArray.getJSONObject(i).getJSONObject("author_details")
+                        val imgUrl=reviewObject.getString("avatar_path")
+                        var comment=jsonArray.getJSONObject(i).getString("content")
+                        var userName=reviewObject.getString("name")
+                        val account="@"+reviewObject.getString("username")
+                        var rating=reviewObject.getString("rating")
 
-                    if(userName=="")
-                        userName="Unknown User"
+                        if(userName=="")
+                            userName="Unknown User"
 
-                    if(rating=="null")
-                        rating="NA"
+                        if(rating=="null")
+                            rating="NA"
 
-                    val publicReview=PublicReview(imgUrl.toUri(),userName,account,comment,rating)
-                    list.add(publicReview)
+                        val publicReview=PublicReview(imgUrl.toUri(),userName,account,comment,rating)
+                        list.add(publicReview)
+                    }
                 }
             }
         }
