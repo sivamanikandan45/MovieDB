@@ -3,10 +3,11 @@ package com.example.moviedb
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
+import android.os.PersistableBundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -26,14 +27,31 @@ class MovieActivity : AppCompatActivity() {
     lateinit var manager: LinearLayoutManager
 
     private lateinit var list:MutableList<Cast>
+    var id=0
+
     /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return super.onOptionsItemSelected(item)
+    }*/
+
+    /*override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("movieId",id)
+        println("Saved id as $id")
+        super.onSaveInstanceState(outState)
     }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
+        //supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val id=intent.getIntExtra("id",0)
+        //supportActionBar?.setDisplayShowHomeEnabled(true)
+        /*if(savedInstanceState!=null){
+            id=savedInstanceState.getInt("movieId")
+            println("Got id as $id")
+        }else{
+            id=intent.getIntExtra("id",0)
+        }*/
+        id=intent.getIntExtra("id",0)
+        println("id got : $id")
         supportActionBar?.title="My Reviews"
         GlobalScope.launch {
             val job=launch{
@@ -47,9 +65,10 @@ class MovieActivity : AppCompatActivity() {
                 adapter=CastListAdapter(list)
                 adapter.setOnItemClickListener(object:CastListAdapter.ItemClickListener{
                     override fun onItemClick(position: Int) {
-                        val id=list[position].id
+                        val castId=list[position].id
                         val intent=Intent(applicationContext,ActorActivity::class.java)
-                        intent.putExtra("id",id)
+                        intent.putExtra("id",castId)
+                        intent.putExtra("movieId",id)
                         startActivity(intent)
                     }
                 })

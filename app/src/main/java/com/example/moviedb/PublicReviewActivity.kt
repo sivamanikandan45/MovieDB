@@ -2,6 +2,7 @@ package com.example.moviedb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.constraintlayout.widget.Group
 import androidx.core.net.toUri
@@ -27,6 +28,7 @@ class PublicReviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_public_review)
         supportActionBar?.title="Public Reviews"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val id=intent.getIntExtra("id",0)
 
@@ -78,10 +80,8 @@ class PublicReviewActivity : AppCompatActivity() {
 
                         if(userName=="")
                             userName="Unknown User"
-
                         if(rating=="null")
                             rating="NA"
-
                         val publicReview=PublicReview(imgUrl.toUri(),userName,account,comment,rating)
                         list.add(publicReview)
                     }
@@ -90,4 +90,15 @@ class PublicReviewActivity : AppCompatActivity() {
         }
         return list
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->{
+                onBackPressed()
+                return true
+            }
+        }
+        return onOptionsItemSelected(item)
+    }
+
 }

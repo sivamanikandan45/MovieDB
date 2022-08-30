@@ -2,7 +2,7 @@ package com.example.moviedb
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.fragment.app.*
@@ -107,11 +107,18 @@ class ReviewFragment : Fragment() {
                         setReorderingAllowed(true)
                         addToBackStack(null)
                         replace(R.id.fragmentContainerView,RatingDescriptionFragment())
+                        //add<RatingDescriptionFragment>(R.id.fragmentContainerView)
                     }
+
+
                 }
             }
         })
+
+
     }
+
+
 
     private fun getPosterUrlById(id: Int): String {
         for(movie in viewModel.movieList){

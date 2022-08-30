@@ -2,6 +2,7 @@ package com.example.moviedb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
@@ -18,10 +19,12 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class ActorActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actor)
         val id=intent.getIntExtra("id",0)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         GlobalScope.launch {
             val job=launch(Dispatchers.IO) {
                 val link="https://image.tmdb.org/t/p/w500/"
@@ -31,10 +34,12 @@ class ActorActivity : AppCompatActivity() {
                 val reader=BufferedReader(InputStreamReader(connection.inputStream))
                 var response=""
                 var line=reader.readLine()
+
                 while(line!=null){
                     response+=line
                     line=reader.readLine()
                 }
+
                 if(response.isNotEmpty()){
                     val jsonObject=JSONTokener(response).nextValue() as JSONObject
                     val name=jsonObject.getString("name")
@@ -81,4 +86,15 @@ class ActorActivity : AppCompatActivity() {
 
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->{
+                onBackPressed()
+                return true
+            }
+        }
+        return onOptionsItemSelected(item)
+    }
+
 }

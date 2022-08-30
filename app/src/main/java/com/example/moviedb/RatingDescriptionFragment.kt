@@ -1,13 +1,8 @@
 package com.example.moviedb
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,9 +15,29 @@ class RatingDescriptionFragment: Fragment() {
 
     }
 
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        view?.isFocusableInTouchMode = true
+        view?.requestFocus()
+
+        view?.setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+                if (event.action === KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        Toast.makeText(activity, "Back Pressed", Toast.LENGTH_SHORT).show()
+                        return true
+                    }
+                }
+                return false
+            }
+        })
+    }*/
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity)?.supportActionBar?.setHomeButtonEnabled(true)
         //val okBtn:Button=view.findViewById(R.id.ok)
         //val preferences=context?.getSharedPreferences("review_preference",Context.MODE_PRIVATE)
         val ratedMovieViewModel:RatedMovieViewModel by  activityViewModels()
@@ -42,10 +57,11 @@ class RatingDescriptionFragment: Fragment() {
 
 
 
-
         /*okBtn.setOnClickListener {
             //dismiss()
         }*/
 
     }
+
+
 }
