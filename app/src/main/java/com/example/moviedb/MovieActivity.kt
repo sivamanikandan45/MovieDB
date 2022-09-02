@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
@@ -38,6 +39,16 @@ class MovieActivity : AppCompatActivity() {
         println("Saved id as $id")
         super.onSaveInstanceState(outState)
     }*/
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->{
+                onBackPressed()
+                return true
+            }
+        }
+        return onOptionsItemSelected(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)

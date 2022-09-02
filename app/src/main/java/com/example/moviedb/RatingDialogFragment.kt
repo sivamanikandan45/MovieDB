@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RatingBar
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -47,7 +46,7 @@ class RatingDialogFragment:DialogFragment() {
 
     private suspend fun addRating(view: View) {
         withContext(Dispatchers.IO){
-            val dbInstance=RatedMovieDB.getDB(context)
+            val dbInstance=MovieDB.getDB(context)
 
             val sharedPreferences=context?.getSharedPreferences("RatingId",Context.MODE_PRIVATE)
             val id=sharedPreferences?.getInt("id",0)

@@ -8,14 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.BufferedReader
@@ -27,19 +25,12 @@ class HomeFragment : Fragment() {
     private lateinit var manager: RecyclerView.LayoutManager
     private lateinit var recyclerView:RecyclerView
     private lateinit var adapter:MovieListAdapter
+    lateinit var list:List<Movie>
+    val movieListViewModel:ListViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-    /*override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as AppCompatActivity).supportActionBar?.show()
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.home_fragment_menu,menu)
@@ -59,7 +50,7 @@ class HomeFragment : Fragment() {
     private fun searchData(newText: String?) {
         var list= mutableListOf<Movie>()
         val movieListViewModel:ListViewModel by activityViewModels()
-        for(movie in movieListViewModel.movieList){
+        for(movie in movieListViewModel.movieList.value!!){
             if(movie.title.lowercase().contains(newText!!.lowercase())){
                 list.add(movie)
             }
@@ -81,10 +72,40 @@ class HomeFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.title="MovieDB"
         (activity as AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         manager= GridLayoutManager(activity,3)
-        val movieListViewModel:ListViewModel by activityViewModels()
+        //val movieListViewModel=ListViewModel(activity?.application!!)
+        adapter=MovieListAdapter()
         GlobalScope.launch {
+            withContext(Dispatchers.IO){
+                list= movieListViewModel.getMovieList()
+                println("list from onvcr $list")
+                println("assinged list value in onViewCertaed()")
+            }
+            withContext(Dispatchers.Main){
+                adapter.setData(ArrayList(list))
+                println("adapter setData Calledd from onViewCreated")
+                if(movieListViewModel.viewType.value==ViewType.GRID){
+                    adapter.setViewType(ViewType.GRID)
+                }else if(movieListViewModel.viewType.value==ViewType.LIST){
+                    adapter.setViewType(ViewType.LIST)
+                }
+                adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
+                    override fun onItemClick(position: Int) {
+                        val intent= Intent(activity,MovieActivity::class.java)
+                        val id=movieListViewModel.movieList.value?.get(position)?.id
+                        intent.putExtra("id",id)
+                        startActivity(intent)
+                    }
+                })
+                recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
+                recyclerView.adapter=adapter
+                recyclerView.layoutManager=manager
+            }
+
+        }
+
+        /*GlobalScope.launch {
             val job= GlobalScope.launch {
-                loadData(movieListViewModel)
+                //loadData(movieListViewModel)
             }
             job.join()
             adapter=MovieListAdapter()
@@ -107,6 +128,22 @@ class HomeFragment : Fragment() {
                 recyclerView.adapter=adapter
                 recyclerView.layoutManager=manager
             }
+        }*/
+
+        movieListViewModel.getAllMovieObservers().observe(viewLifecycleOwner) {
+            //var list:List<Movie> = listOf()
+            /*GlobalScope.launch {
+                val job=launch {
+                    withContext(Dispatchers.IO){
+                        list=movieListViewModel.getMovieList()
+                        println("list from observer $list")
+                    }
+                }
+                job.join()
+                adapter.setData(ArrayList(list))
+            }*/
+            adapter.setData(ArrayList(it))
+            println("adapter setData Called from observer")
         }
 
         movieListViewModel.viewType.observe(viewLifecycleOwner, Observer {
@@ -114,12 +151,27 @@ class HomeFragment : Fragment() {
                 manager=LinearLayoutManager(context)
                 recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 adapter= MovieListAdapter()
-                adapter.setData(ArrayList(movieListViewModel.movieList))
+                //adapter.setData(ArrayList(movieListViewModel.movieList.value))
+                //var list:List<Movie> = listOf()
+                GlobalScope.launch {
+                    val job=launch {
+                        withContext(Dispatchers.IO){
+                            list=movieListViewModel.getMovieList()
+                        }
+                    }
+                    job.join()
+                    adapter.setData(ArrayList(list))
+                }
+
+
+                //println("list from olist brnchr $list")
+                println("adapter setData Calledd from list branch")
                 adapter.setViewType(ViewType.LIST)
                 adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
                     override fun onItemClick(position: Int) {
                         val intent= Intent(activity,MovieActivity::class.java)
-                        val id=movieListViewModel.movieList[position].id
+                        //val id=movieListViewModel.movieList[position].id
+                        val id=movieListViewModel.movieList.value?.get(position)?.id
                         intent.putExtra("id",id)
                         startActivity(intent)
                     }
@@ -130,12 +182,24 @@ class HomeFragment : Fragment() {
                 recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 manager=GridLayoutManager(context,3)
                 adapter=MovieListAdapter()
-                adapter.setData(ArrayList(movieListViewModel.movieList))
+                //var list:List<Movie> = listOf()
+                GlobalScope.launch {
+                    val job=launch {
+                        withContext(Dispatchers.IO){
+                            list=movieListViewModel.getMovieList()
+                        }
+                    }
+                    job.join()
+                    adapter.setData(ArrayList(list))
+                }
+                //println("list from grid brnchr $list")
+                println("adapter setData Calledd from grid branch")
                 adapter.setViewType(ViewType.GRID)
                 adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
                     override fun onItemClick(position: Int) {
                         val intent= Intent(activity,MovieActivity::class.java)
-                        val id=movieListViewModel.movieList[position].id
+                        ///val id=movieListViewModel.movieList[position].id
+                        val id=movieListViewModel.movieList.value?.get(position)?.id
                         intent.putExtra("id",id)
                         startActivity(intent)
                     }
@@ -172,12 +236,12 @@ class HomeFragment : Fragment() {
                     val overview=jsonArray.getJSONObject(i).getString("overview")
                     val title=jsonArray.getJSONObject(i).getString("original_title")
                     val popularity=jsonArray.getJSONObject(i).getString("popularity")
-                    val movie=Movie(id,title,(link+imgURI.toString()).toUri(),overview,popularity.toDouble(),(link+bgURI.toString()).toUri())
+                    val movie=Movie(id,title,(link+imgURI.toString()),overview,popularity.toDouble(),(link+bgURI.toString()))
                     //movieListViewModel.movieList.add(movie)
                     //dbInstance.getDao().addMovie(movie)
                     list.add(movie)
                 }
-                movieListViewModel.movieList=list
+                movieListViewModel.movieList.value=list
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.example.moviedb
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -26,7 +24,7 @@ class MyRatingDialog:DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val dropDownTextField=view.findViewById<AutoCompleteTextView>(R.id.movie_dropdown)
         val list= mutableListOf<String>()
-        for(movie in viewModel.movieList){
+        for(movie in viewModel.movieList.value!!){
             list.add(movie.title)
         }
 
@@ -53,7 +51,7 @@ class MyRatingDialog:DialogFragment() {
 
     private suspend fun addRating(view: View) {
         withContext(Dispatchers.IO) {
-            val dbInstance = RatedMovieDB.getDB(context)
+            val dbInstance = MovieDB.getDB(context)
 
             val textField=view.findViewById<AutoCompleteTextView>(R.id.movie_dropdown)
             val movieName=textField.text.toString()

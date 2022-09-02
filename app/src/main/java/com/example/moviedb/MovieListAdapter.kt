@@ -11,7 +11,8 @@ import com.squareup.picasso.Picasso
 class MovieListAdapter():RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
     private lateinit var listener:ItemClickListener
     private var viewType: ViewType =ViewType.GRID
-    private lateinit var list: List<Movie>
+    //private lateinit var list: List<Movie>
+    private var list:List<Movie> = listOf()
 
     interface ItemClickListener{
         fun onItemClick(position:Int)

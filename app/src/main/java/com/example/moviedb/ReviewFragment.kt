@@ -2,7 +2,6 @@ package com.example.moviedb
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.fragment.app.*
@@ -32,7 +31,7 @@ class ReviewFragment : Fragment() {
         /*(activity as AppCompatActivity).supportActionBar?.show()*/
         (activity as AppCompatActivity).supportActionBar?.title="My Reviews"
         (activity as AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        val ratedMovieDB=RatedMovieDB.getDB(context)
+        val movieDB=MovieDB.getDB(context)
         val group=view.findViewById<Group>(R.id.group)
 
         val addReviewBtn:FloatingActionButton=view.findViewById(R.id.add_review)
@@ -121,7 +120,7 @@ class ReviewFragment : Fragment() {
 
 
     private fun getPosterUrlById(id: Int): String {
-        for(movie in viewModel.movieList){
+        for(movie in viewModel.movieList.value!!){
             if(movie.id==id){
                 return movie.backgroundImg.toString()
             }
@@ -130,14 +129,14 @@ class ReviewFragment : Fragment() {
     }
 
     private fun getNameById(id: Int): String {
-        for(movie in viewModel.movieList){
+        for(movie in viewModel.movieList.value!!){
             if(movie.id==id)
                 return movie.title
         }
         return ""
     }
     private fun getImageUrlById(id:Int):String{
-        for(movie in viewModel.movieList){
+        for(movie in viewModel.movieList.value!!){
             if(movie.id==id){
                 return movie.posterimg.toString()
             }

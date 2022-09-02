@@ -47,7 +47,7 @@ class RatedListAdapter(val model: ListViewModel):RecyclerView.Adapter<RatedListA
     }
 
     override fun onBindViewHolder(holder: RatedListAdapter.ViewHolder, position: Int) {
-        for(movie in model.movieList){
+        for(movie in model.movieList.value!!){
             if(movie.id== list[position].id){
                 Picasso.get().load(movie.posterimg).into(holder.imageView)
                 holder.rateMovieTitle.text=movie.title
