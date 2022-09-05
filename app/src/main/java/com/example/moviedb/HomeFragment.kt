@@ -3,16 +3,18 @@ package com.example.moviedb
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -21,12 +23,17 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
+
 class HomeFragment : Fragment() {
     private lateinit var manager: RecyclerView.LayoutManager
     private lateinit var recyclerView:RecyclerView
     private lateinit var adapter:MovieListAdapter
     lateinit var list:List<Movie>
     val movieListViewModel:ListViewModel by activityViewModels()
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -49,14 +56,23 @@ class HomeFragment : Fragment() {
 
     private fun searchData(newText: String?) {
         var list= mutableListOf<Movie>()
-        val movieListViewModel:ListViewModel by activityViewModels()
+        //val movieListViewModel:ListViewModel by activityViewModels()
         for(movie in movieListViewModel.movieList.value!!){
             if(movie.title.lowercase().contains(newText!!.lowercase())){
                 list.add(movie)
             }
         }
         adapter.setData(ArrayList(list))
+        adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
+            override fun onItemClick(position: Int) {
+                val intent= Intent(activity,MovieActivity::class.java)
+                val id=list[position].id
+                intent.putExtra("id",id)
+                startActivity(intent)
+            }
+        })
         adapter.notifyDataSetChanged()
+        recyclerView.adapter=adapter
 
     }
 
@@ -66,9 +82,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //adapter:MovieListAdapter
         super.onViewCreated(view, savedInstanceState)
-        /*(activity as AppCompatActivity).supportActionBar?.hide()*/
+        val movieListViewModel= ViewModelProvider(requireActivity()).get(ListViewModel::class.java)
         (activity as AppCompatActivity).supportActionBar?.title="MovieDB"
         (activity as AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         manager= GridLayoutManager(activity,3)
@@ -77,12 +92,9 @@ class HomeFragment : Fragment() {
         GlobalScope.launch {
             withContext(Dispatchers.IO){
                 list= movieListViewModel.getMovieList()
-                println("list from onvcr $list")
-                println("assinged list value in onViewCertaed()")
             }
             withContext(Dispatchers.Main){
                 adapter.setData(ArrayList(list))
-                println("adapter setData Calledd from onViewCreated")
                 if(movieListViewModel.viewType.value==ViewType.GRID){
                     adapter.setViewType(ViewType.GRID)
                 }else if(movieListViewModel.viewType.value==ViewType.LIST){
@@ -130,29 +142,32 @@ class HomeFragment : Fragment() {
             }
         }*/
 
-        movieListViewModel.getAllMovieObservers().observe(viewLifecycleOwner) {
-            //var list:List<Movie> = listOf()
-            /*GlobalScope.launch {
-                val job=launch {
-                    withContext(Dispatchers.IO){
-                        list=movieListViewModel.getMovieList()
-                        println("list from observer $list")
-                    }
-                }
-                job.join()
-                adapter.setData(ArrayList(list))
-            }*/
+        movieListViewModel.getAllMovieObservers().observe(viewLifecycleOwner, Observer{
             adapter.setData(ArrayList(it))
-            println("adapter setData Called from observer")
-        }
+            adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
+                override fun onItemClick(position: Int) {
+                    val intent= Intent(activity,MovieActivity::class.java)
+                    val id=movieListViewModel.movieList.value?.get(position)?.id
+                    intent.putExtra("id",id)
+                    startActivity(intent)
+                }
+            })
+            recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
+            adapter.setViewType(movieListViewModel.viewType.value!!)
+            if(movieListViewModel.viewType.value==ViewType.LIST){
+                recyclerView.layoutManager=LinearLayoutManager(context)
+            }else{
+                recyclerView.layoutManager=GridLayoutManager(context,3)
+            }
+            recyclerView.adapter=adapter
+        })
 
         movieListViewModel.viewType.observe(viewLifecycleOwner, Observer {
             if(it==ViewType.LIST){
                 manager=LinearLayoutManager(context)
                 recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 adapter= MovieListAdapter()
-                //adapter.setData(ArrayList(movieListViewModel.movieList.value))
-                //var list:List<Movie> = listOf()
+
                 GlobalScope.launch {
                     val job=launch {
                         withContext(Dispatchers.IO){
@@ -163,14 +178,10 @@ class HomeFragment : Fragment() {
                     adapter.setData(ArrayList(list))
                 }
 
-
-                //println("list from olist brnchr $list")
-                println("adapter setData Calledd from list branch")
                 adapter.setViewType(ViewType.LIST)
                 adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
                     override fun onItemClick(position: Int) {
                         val intent= Intent(activity,MovieActivity::class.java)
-                        //val id=movieListViewModel.movieList[position].id
                         val id=movieListViewModel.movieList.value?.get(position)?.id
                         intent.putExtra("id",id)
                         startActivity(intent)
@@ -182,7 +193,6 @@ class HomeFragment : Fragment() {
                 recyclerView=view.findViewById<RecyclerView>(R.id.recycler)
                 manager=GridLayoutManager(context,3)
                 adapter=MovieListAdapter()
-                //var list:List<Movie> = listOf()
                 GlobalScope.launch {
                     val job=launch {
                         withContext(Dispatchers.IO){
@@ -192,8 +202,6 @@ class HomeFragment : Fragment() {
                     job.join()
                     adapter.setData(ArrayList(list))
                 }
-                //println("list from grid brnchr $list")
-                println("adapter setData Calledd from grid branch")
                 adapter.setViewType(ViewType.GRID)
                 adapter.setOnItemClickListener(object :MovieListAdapter.ItemClickListener{
                     override fun onItemClick(position: Int) {
@@ -208,6 +216,21 @@ class HomeFragment : Fragment() {
                 recyclerView.layoutManager=manager
             }
         })
+
+
+        val swipeRefreshLayout=view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener {
+            GlobalScope.launch {
+                val job=launch {
+                    movieListViewModel.loadData()
+                }
+                job.join()
+                withContext(Dispatchers.Main){
+                    adapter.notifyDataSetChanged()
+                    swipeRefreshLayout.isRefreshing=false
+                }
+            }
+        }
     }
 
 
@@ -237,8 +260,6 @@ class HomeFragment : Fragment() {
                     val title=jsonArray.getJSONObject(i).getString("original_title")
                     val popularity=jsonArray.getJSONObject(i).getString("popularity")
                     val movie=Movie(id,title,(link+imgURI.toString()),overview,popularity.toDouble(),(link+bgURI.toString()))
-                    //movieListViewModel.movieList.add(movie)
-                    //dbInstance.getDao().addMovie(movie)
                     list.add(movie)
                 }
                 movieListViewModel.movieList.value=list

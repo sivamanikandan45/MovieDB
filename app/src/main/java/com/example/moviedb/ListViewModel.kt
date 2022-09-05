@@ -1,14 +1,11 @@
 package com.example.moviedb
 
 import android.app.Application
-import android.content.Context
-
-import android.net.ConnectivityManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -21,32 +18,37 @@ import java.net.URL
 
 class ListViewModel(application: Application) :AndroidViewModel(application){
 
-    val _movieList= mutableListOf<Movie>()
-    //var movieList=_movieList
     lateinit var movieList:MutableLiveData<List<Movie>>
     var movie:MutableLiveData<Movie> = MutableLiveData<Movie>()
-
     var viewType:MutableLiveData<ViewType> = MutableLiveData()
-
     lateinit var allRatedMovies:MutableLiveData<List<RatedMovie>>
+
     init {
         allRatedMovies= MutableLiveData()
         movieList= MutableLiveData()
         viewType.value=ViewType.GRID
 
         viewModelScope.launch {
-            val job=launch {
-                loadData()
+            if(movieList.value==null){
+                val job=launch {
+                    println("loading from api")
+                    loadData()
+                }
+                job.join()
+            }else{
+                println("F")
+                withContext(Dispatchers.IO){
+                    println("loaded from db")
+                    getALlMovies()
+                }
             }
-            job.join()
-            //println(movieList)
-            println("list is assigned in viewmodel scope")
         }
+
 
     }
 
 
-    private suspend fun loadData() {
+    suspend fun loadData() {
         withContext(Dispatchers.IO){
             val url="https://api.themoviedb.org/3/trending/movie/day?api_key=08e4a6a03c5c292c1893f7127324e5f3"
             val connection= URL(url).openConnection() as HttpURLConnection
@@ -74,12 +76,9 @@ class ListViewModel(application: Application) :AndroidViewModel(application){
                     //movieListViewModel.movieList.add(movie)
                     //dbInstance.getDao().addMovie(movie)
                     list.add(movie)
-
                     //println(list)
                 }
-                //movieList.postValue(list)
                 insertMovieList(list)
-                //println(movieList)
             }
         }
     }
@@ -111,8 +110,6 @@ class ListViewModel(application: Application) :AndroidViewModel(application){
         dao.insertMovieList(list)
         getALlMovies()
     }
-
-
 
     fun insertRatedMovie(movie: RatedMovie){
         MovieDB.getDB(getApplication<Application?>().applicationContext).ratedMovieDao().addReview(movie)

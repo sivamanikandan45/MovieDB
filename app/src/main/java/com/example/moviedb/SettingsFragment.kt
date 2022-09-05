@@ -29,10 +29,8 @@ class SettingsFragment : Fragment() {
         radioGrp.setOnCheckedChangeListener { group, checkedId ->
             when(checkedId){
                 R.id.grid_view->{viewModel.viewType.value=ViewType.GRID
-                println("Grid view $checkedId is selected")
                 }
                 R.id.list_view->{viewModel.viewType.value=ViewType.LIST
-                    println("List view $checkedId is selected")
                 }
             }
         }
@@ -54,7 +52,6 @@ class SettingsFragment : Fragment() {
 
         viewModel.viewType.observe(viewLifecycleOwner, Observer {
             if(it==ViewType.LIST){
-                //val radioGroup
                 val gridViewBtn=view.findViewById<RadioButton>(R.id.grid_view)
                 gridViewBtn.isChecked=false
                 val listViewBtn=view.findViewById<RadioButton>(R.id.list_view)

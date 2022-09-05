@@ -30,15 +30,6 @@ class MovieActivity : AppCompatActivity() {
     private lateinit var list:MutableList<Cast>
     var id=0
 
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
-    }*/
-
-    /*override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt("movieId",id)
-        println("Saved id as $id")
-        super.onSaveInstanceState(outState)
-    }*/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home->{
@@ -52,15 +43,8 @@ class MovieActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
-        //supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //supportActionBar?.setDisplayShowHomeEnabled(true)
-        /*if(savedInstanceState!=null){
-            id=savedInstanceState.getInt("movieId")
-            println("Got id as $id")
-        }else{
-            id=intent.getIntExtra("id",0)
-        }*/
         id=intent.getIntExtra("id",0)
         println("id got : $id")
         supportActionBar?.title="My Reviews"

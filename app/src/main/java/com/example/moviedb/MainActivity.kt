@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -33,15 +34,5 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fragmentContainerView,fragment)
         }
     }
-
-    /*override fun onResume() {
-        super.onResume()
-        println("Main oda resume pa idhu")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        println("Pausing.....")
-    }*/
 
 }

@@ -64,4 +64,14 @@ class RatingDescriptionFragment: Fragment() {
     }
 
 
+
+    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(activity?.supportFragmentManager?.backStackEntryCount==0){
+            return super.onOptionsItemSelected(item)
+        }
+        activity?.supportFragmentManager?.popBackStack()
+        return true
+    }*/
+
+
 }
