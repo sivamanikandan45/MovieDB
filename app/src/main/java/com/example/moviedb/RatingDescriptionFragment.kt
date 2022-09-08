@@ -3,6 +3,7 @@ package com.example.moviedb
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -72,6 +73,13 @@ class RatingDescriptionFragment: Fragment() {
         activity?.supportFragmentManager?.popBackStack()
         return true
     }*/
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            //requireActivity().onBackPressed()
+        }
+    }
 
 
 }
